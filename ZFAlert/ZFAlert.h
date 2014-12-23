@@ -20,7 +20,7 @@ typedef enum {
 
 @optional
 
-- (void)alert:(ZFAlert *)alert clickedButtonAtIndex:(NSInteger)buttonIndex;
+- (void)alert:(ZFAlert *)alert clickedButtonAtIndex:(NSInteger)buttonIndex isCancel:(BOOL)flag;
 
 @end
 

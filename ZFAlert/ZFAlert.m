@@ -98,11 +98,11 @@ BOOL ZFAlertiOS8 ()
         } else {
             
             self.actionSheet = [[UIActionSheet alloc]
-                              initWithTitle:title
-                              delegate:self
-                              cancelButtonTitle:cancelButtonTitle
-                              destructiveButtonTitle:destructiveButtonTitle
-                              otherButtonTitles:nil, nil];
+                                initWithTitle:title
+                                delegate:self
+                                cancelButtonTitle:cancelButtonTitle
+                                destructiveButtonTitle:destructiveButtonTitle
+                                otherButtonTitles:nil, nil];
         }
         
         _alertStyle = ZFAlertStyleSheet;
@@ -126,7 +126,7 @@ BOOL ZFAlertiOS8 ()
                                                                   
                                                                   NSInteger index = [self.alertVC.actions indexOfObject:action];
                                                                   
-                                                                  [self clickedButtonAtIndex:index];
+                                                                  [self clickedButtonAtIndex:index isCancel:YES];
                                                               }];
         
         [self.alertVC addAction:cancelAction];
@@ -143,11 +143,11 @@ BOOL ZFAlertiOS8 ()
         UIAlertAction * action = [UIAlertAction actionWithTitle:title
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction *action) {
-                                                             
+                                                            
                                                             NSInteger index = [self.alertVC.actions indexOfObject:action];
                                                             
-                                                            [self clickedButtonAtIndex:index];
-                                                         }];
+                                                            [self clickedButtonAtIndex:index isCancel:NO];
+                                                        }];
         [self.alertVC addAction:action];
     } else {
         
@@ -202,12 +202,12 @@ BOOL ZFAlertiOS8 ()
     }
 }
 
-- (void)clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)clickedButtonAtIndex:(NSInteger)buttonIndex isCancel:(BOOL)flag
 {
     if (_delegate &&
-        [_delegate respondsToSelector:@selector(alert:clickedButtonAtIndex:)]) {
+        [_delegate respondsToSelector:@selector(alert:clickedButtonAtIndex:isCancel:)]) {
         
-        [_delegate alert:self clickedButtonAtIndex:buttonIndex];
+        [_delegate alert:self clickedButtonAtIndex:buttonIndex isCancel:flag];
         
     }
 }
@@ -215,14 +215,14 @@ BOOL ZFAlertiOS8 ()
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [self clickedButtonAtIndex:buttonIndex];
+    [self clickedButtonAtIndex:buttonIndex isCancel:buttonIndex == alertView.cancelButtonIndex];
 }
 
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [self clickedButtonAtIndex:buttonIndex];
+    [self clickedButtonAtIndex:buttonIndex isCancel:buttonIndex == actionSheet.cancelButtonIndex];
 }
 
 @end
